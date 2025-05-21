@@ -1,0 +1,14 @@
+.carrusel-contenedor {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .slide img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  

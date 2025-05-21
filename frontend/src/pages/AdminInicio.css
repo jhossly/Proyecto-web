@@ -1,0 +1,42 @@
+/* src/pages/AdminInicio.css */
+.admin-inicio {
+  text-align: center;
+  padding: 40px;
+  background-color: #fffdf5;
+  color: #333;
+}
+
+.admin-inicio h1 {
+  color: #ff6b00;
+  font-size: 2rem;
+}
+
+.admin-inicio ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.admin-inicio li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.admin-botones {
+  margin-top: 30px;
+}
+
+.admin-botones button {
+  margin: 10px;
+  padding: 12px 25px;
+  background-color: #ff6b00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.admin-botones button:hover {
+  background-color: #ff8c1a;
+}

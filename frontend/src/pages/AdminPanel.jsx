@@ -25,8 +25,8 @@ const AdminPanel = () => {
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.post('http://localhost:5000/api/products');
-         productoConPrecioFinal;
+        const res = await axios.get('http://localhost:5000/api/products');
+         
         setProducts(res.data);
 
         const categorias = res.data.map(p => p.categoria).filter(Boolean);

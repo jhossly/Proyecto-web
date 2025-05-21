@@ -30,10 +30,11 @@ imagen: {
     required: true 
 
  },
-fechaingreso :{
+fechaIngreso :{
 type: Date,
 default: Date.now
 },
 
 })
+
 export default mongoose.model('Product', productSchema);

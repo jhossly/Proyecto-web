@@ -1,5 +1,4 @@
 import Products from '../models/Products.js';
-
 export const crearProducto = async (req, res) => {
   const { nombre, descripcion, precio, categoria, stock, imagen, conIVA } = req.body;
 
@@ -9,7 +8,8 @@ export const crearProducto = async (req, res) => {
       return res.status(400).json({ mensaje: 'Nombre y precio son obligatorios' });
     }
 
-    const precioFinal = conIVA ? (parseFloat(precio) * 1.15).toFixed(2) : parseFloat(precio);
+    const precioFinal = conIVA ? parseFloat((parseFloat(precio) * 1.15).toFixed(2)) : parseFloat(precio);
+
 
     const nuevoProducto = new Products({
       nombre,
@@ -19,7 +19,7 @@ export const crearProducto = async (req, res) => {
       stock: stock || 0,
       imagen: imagen || '',
       conIVA: conIVA || false,
-      fechaIngreso: new Date()
+      //fechaIngreso: Date.now,
     });
 
     await nuevoProducto.save();

@@ -1,4 +1,3 @@
-/*Login.jsx*/ 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -31,20 +30,37 @@ const Login = () => {
       });
 
       const data = await res.json();
+      console.log('Respuesta completa:', res);
+      console.log('Datos recibidos:', data);
+
 
       if (res.ok) {
-         localStorage.setItem('user', JSON.stringify(data.user)); // o data si no viene así
-          localStorage.setItem('token', data.token);
-        if (data.role === 'admin') {
-          navigate('/adminInicio');
+        const { token, user } = data;
+
+        if (user && user.role && user._id) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify({
+            role: user.role,
+            nombre: user.nombre,
+            id: user._id,
+          }));
+
+          // Redirección según el rol
+          if (user.role === 'admin') {
+            navigate('/adminInicio');
+          } else {
+            navigate('/');
+          }
         } else {
-          navigate('/');
+          alert("Datos de usuario inválidos.");
         }
       } else {
-        alert(data.message);
+        alert(data.msg || "Credenciales inválidas.");
       }
+
     } catch (error) {
-      console.error('Error al iniciar sesión', error);
+      console.error('Error al iniciar sesión:', error);
+      alert("Error del servidor.");
     }
   };
 

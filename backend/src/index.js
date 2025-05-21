@@ -1,20 +1,12 @@
-import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';
-import userRoutes from './routers/userRouter.js'; // Ajusta si está en otra carpeta
 
-const app = express();
+import app from './app.js'
+
 const PORT = 5000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Rutas
-app.use('/api/usuarios', userRoutes);
 
 // Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/golosito')
+mongoose.connect('mongodb://localhost:27017/golosito_db')
   .then(() => {
     console.log('Conectado a MongoDB');
     app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

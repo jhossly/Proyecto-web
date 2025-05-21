@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 // REGISTRO
-export const register = async (req, res) => {
+const register = async (req, res) => {
   const { nombre, correo, contraseña } = req.body;
 
   try {
@@ -37,7 +37,7 @@ export const register = async (req, res) => {
 };
 
 // LOGIN
-export const login = async (req, res) => {
+const login = async (req, res) => {
   const { correo, contraseña } = req.body;
 
   try {
@@ -52,15 +52,21 @@ export const login = async (req, res) => {
       'secreto_super_secreto',
       { expiresIn: '1h' }
     );
-
-    res.status(200).json({
+      
+        res.status(200).json({
       message: 'Login exitoso',
       token,
-      role: user.role,
-      userId: user._id
+      user: {
+        _id: user._id,
+        nombre: user.nombre,
+        correo: user.correo,
+        role: user.role
+      }
     });
 
   } catch (error) {
     res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
 };
+
+export { register, login };

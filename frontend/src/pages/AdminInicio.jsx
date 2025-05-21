@@ -17,7 +17,7 @@ const AdminInicio = () => {
       </ul>
 
       <div className="admin-botones">
-        <button onClick={() => navigate('/adminpanel')}>Ir a gestión de productos</button>
+        <button onClick={() => navigate('/adminPanel')}>Ir a gestión de productos</button>
         <button onClick={() => navigate('/usuarios')}>Ver usuarios</button>
       </div>
     </div>

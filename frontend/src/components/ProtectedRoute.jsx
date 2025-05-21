@@ -1,8 +1,17 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = ({ allowedRoles }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  let user = null;
   const token = localStorage.getItem('token');
+
+  try {
+    const datosGuardados = localStorage.getItem('user'); // usa solo 'user' o 'usuario', pero sé consistente
+    if (datosGuardados) {
+      user = JSON.parse(datosGuardados);
+    }
+  } catch (error) {
+    console.error('Error al leer el usuario:', error);
+  }
 
   if (!token || !user) {
     return <Navigate to="/login" replace />;

@@ -1,14 +1,90 @@
 /* src/App.css */
 
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fffdf5;
+  color: #003460;
+  line-height: 1.6;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+  min-height: 100vh;
+  background-color: #fffdf5;
 }
 
 .main-content {
   flex: 1;
-  min-height: calc(100vh - 80px - 60px); /* Ajusta las alturas del header y footer */
   display: flex;
   flex-direction: column;
+  padding: 1.5rem 1rem;
+  background-color: #fffdf5;
+}
+
+/* Botones globales */
+button {
+  background-color: #ed811f;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #d36f12;
+}
+
+/* Inputs y selects globales */
+input, select {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #1e90ff;
+  box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+}
+
+/* Footer */
+footer {
+  background-color: #003460;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+/* Titulares generales */
+h1, h2, h3 {
+  color: #ed811f;
+  margin-bottom: 1rem;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+  }
 }

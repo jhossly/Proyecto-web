@@ -1,4 +1,4 @@
-// src/components/Carrusel/CarruselOfertas.jsx
+/*// src/components/Carrusel/CarruselOfertas.jsx
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -55,3 +55,4 @@ const CarruselOfertas = () => {
 };
 
 export default CarruselOfertas;
+*/

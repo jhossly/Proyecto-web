@@ -1,14 +1,25 @@
+/* CarruselOfertas.css */
 .carrusel-contenedor {
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .slide img {
-    max-width: 300px;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-  
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  text-align: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.slide img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #f05335;
+  transition: transform 0.3s ease;
+}
+
+.slide img:hover {
+  transform: scale(1.03);
+}

@@ -1,13 +1,73 @@
+/* src/pages/Ventas.css */
+
+body {
+  background-color: #fffdf5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  color: #ed811f;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
 form {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px;
-    margin: auto;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  margin: 2rem auto;
+  gap: 1rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+input,
+select {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus {
+  border-color: #ed811f;
+  box-shadow: 0 0 0 2px rgba(237, 129, 31, 0.2);
+  outline: none;
+}
+
+button[type="submit"] {
+  padding: 0.75rem;
+  background-color: #ed811f;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #d06e14;
+}
+
+@media (max-width: 500px) {
+  form {
+    max-width: 90%;
+    padding: 1.5rem 1rem;
   }
-  
-  input, select, button {
-    padding: 8px;
-    border-radius: 4px;
+
+  h2 {
+    font-size: 1.5rem;
   }
-  
+
+  button[type="submit"] {
+    font-size: 0.95rem;
+  }
+}

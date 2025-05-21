@@ -1,6 +1,21 @@
+/* footer.css */
 .footer {
-    background-color: #f1f1f1;
-    padding: 20px;
-    text-align: center;
-    margin-top: 40px;
-  }
+  background-color: #003460; /* Azul oscuro */
+  color: #e6e8cd; /* Texto claro y elegante */
+  padding: 20px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.95rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.footer a {
+  color: #ed811f; /* Naranja principal */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #c65f12; /* Naranja más oscuro para hover */
+}

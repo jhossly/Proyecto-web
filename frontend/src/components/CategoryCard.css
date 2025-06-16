@@ -1,19 +1,221 @@
-.category-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s;
+/* CartSidebar.css */
+
+/* Contenedor principal del sidebar */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Oculto por defecto */
+  width: 350px;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: -3px 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  transition: right 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Cuando está abierto */
+.cart-sidebar.open {
+  right: 0;
+}
+
+/* Header */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.cart-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Mensaje carrito vacío */
+.empty-cart {
+  font-size: 1.1rem;
+  color: #777;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Lista de productos */
+.cart-items {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+/* Cada producto */
+.cart-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.cart-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+/* Detalles del producto */
+.item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-details h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.item-details p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Controles de cantidad */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.quantity-controls button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-controls button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.quantity-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.quantity-controls span {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Botón eliminar */
+.remove-btn {
+  align-self: flex-start;
+  background-color: transparent;
+  border: none;
+  color: #d9534f;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.remove-btn:hover {
+  color: #b52b27;
+}
+
+/* Footer con total y botón */
+.cart-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cart-footer h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #111;
+  text-align: right;
+}
+
+.cart-footer button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-footer button:disabled {
+  background-color: #a0c8ff;
+  cursor: not-allowed;
+}
+
+.cart-footer button:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+/* Scrollbar personalizado para Webkit */
+.cart-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cart-sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.cart-sidebar::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 480px) {
+  .cart-sidebar {
+    width: 100%;
+    right: -100%;
   }
-  
-  .category-card:hover {
-    transform: scale(1.05);
+  .cart-sidebar.open {
+    right: 0;
   }
-  
-  .icon {
-    font-size: 24px;
-    display: block;
-    margin-bottom: 8px;
+  .cart-img {
+    width: 60px;
+    height: 60px;
   }
+}

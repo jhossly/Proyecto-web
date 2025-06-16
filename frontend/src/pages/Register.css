@@ -1,33 +1,64 @@
+/* src/pages/Register.css */
+
 .register-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #fff8e7;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 90%;
+  width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: #fffdf5;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 52, 96, 0.15);
+  color: #003460;
+}
+
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ed811f;
+  font-size: 1.75rem;
+}
+
+.register-container input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.register-container input:focus {
+  border-color: #1e90ff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.15);
+}
+
+.register-container button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #ed811f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-container button:hover {
+  background-color: #d36f12;
+}
+
+@media (max-width: 480px) {
+  .register-container {
+    padding: 1.5rem 1rem;
+    margin: 2rem auto;
   }
-  
+
   .register-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
   }
-  
-  .register-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .register-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #ff9900;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
+}

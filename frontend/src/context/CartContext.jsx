@@ -3,47 +3,67 @@ import { createContext, useState, useEffect } from 'react';
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(() => {
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Cargar carrito desde localStorage al iniciar
+  useEffect(() => {
     const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+    if (savedCart) {
+      try {
+        const parsed = JSON.parse(savedCart);
+        const cleaned = parsed.map(item => ({
+          ...item,
+          precio: parseFloat(String(item.precio).replace(',', '.')) || 0,
+          quantity: parseInt(item.quantity) || 1
+        }));
+        setCartItems(cleaned);
+      } catch (e) {
+        console.error('Error parsing cart:', e);
+        localStorage.removeItem('cart');
+      }
+    }
+  }, []);
 
-  const [isCartOpen, setIsCartOpen] = useState(false); // Estado para controlar el sidebar
-
+  // Guardar carrito en localStorage cuando cambia
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+    setCartItems(prev => {
+      const existing = prev.find(p => p.id === product.id);
+      if (existing) {
+        return prev.map(p =>
+          p.id === product.id
+            ? { ...p, quantity: p.quantity + 1 }
+            : p
         );
       }
-      return [...prevItems, { ...product, quantity: 1 }];
+      return [...prev, {
+        ...product,
+        quantity: 1,
+        precio: parseFloat(String(product.precio).replace(',', '.')) || 0
+      }];
     });
-    setIsCartOpen(true); // Abre el sidebar al agregar
+    setIsCartOpen(true);
   };
 
   const updateQuantity = (id, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeItem(id);
-      return;
-    }
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, parseInt(newQuantity)) }
+          : item
       )
     );
   };
 
   const removeItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    setCartItems(prev => prev.filter(item => item.id !== id));
   };
+
+  const clearCart = () => setCartItems([]);
 
   return (
     <CartContext.Provider
@@ -52,8 +72,9 @@ export const CartProvider = ({ children }) => {
         addToCart,
         updateQuantity,
         removeItem,
+        clearCart,
         isCartOpen,
-        setIsCartOpen,
+        setIsCartOpen
       }}
     >
       {children}

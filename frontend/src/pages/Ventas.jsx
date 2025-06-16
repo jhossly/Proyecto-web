@@ -1,118 +1,104 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Ventas.css';
 
-const Ventas = () => {
-  const [venta, setVenta] = useState({
-    usuarioId: '', //  poner un ID válido de usuario
-    productos: [
-      {
-        productoId: '', // ID válido 
-        cantidad: 1,
-        precioUnitario: 0
+const AdminVentas = () => {
+  const [ordenes, setOrdenes] = useState([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No autenticado');
+        }
+
+        const response = await axios.get('http://localhost:5000/api/orders', {
+          headers: {
+            'Authorization': `Bearer ${token.replace(/"/g, '')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        setOrdenes(response.data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError(
+          err.response?.data?.error ||
+          err.response?.data?.message ||
+          'Error al cargar órdenes'
+        );
+      } finally {
+        setLoading(false);
       }
-    ],
-    totalVenta: 0,
-    metodoPago: 'efectivo'
-  });
+    };
 
-  const handleChange = (e) => {
-    setVenta({
-      ...venta,
-      [e.target.name]: e.target.value
-    });
-  };
+    fetchOrders();
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const respuesta = await fetch('http://localhost:5000/api/ventas', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(venta)
-      });
-
-      const data = await respuesta.json();
-
-      if (respuesta.ok) {
-        alert('Venta registrada exitosamente');
-        console.log(data);
-      } else {
-        alert(data.mensaje || 'Error al registrar venta');
-      }
-    } catch (error) {
-      console.error('Error de conexión:', error);
-      alert('Error en la conexión al servidor');
-    }
-  };
+  if (loading) return <div className="loading">Cargando órdenes...</div>;
 
   return (
-    <div>
-      <h2>Registrar Venta</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="usuarioId"
-          placeholder="ID del Usuario"
-          value={venta.usuarioId}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="productoId"
-          placeholder="ID del Producto"
-          value={venta.productos[0].productoId}
-          onChange={(e) => {
-            const nuevosProductos = [...venta.productos];
-            nuevosProductos[0].productoId = e.target.value;
-            setVenta({ ...venta, productos: nuevosProductos });
-          }}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Cantidad"
-          value={venta.productos[0].cantidad}
-          onChange={(e) => {
-            const nuevosProductos = [...venta.productos];
-            nuevosProductos[0].cantidad = Number(e.target.value);
-            setVenta({ ...venta, productos: nuevosProductos });
-          }}
-        />
-        <input
-          type="number"
-          placeholder="Precio unitario"
-          value={venta.productos[0].precioUnitario}
-          onChange={(e) => {
-            const nuevosProductos = [...venta.productos];
-            nuevosProductos[0].precioUnitario = Number(e.target.value);
-            setVenta({ ...venta, productos: nuevosProductos });
-          }}
-        />
-        <input
-          type="number"
-          name="totalVenta"
-          placeholder="Total"
-          value={venta.totalVenta}
-          onChange={handleChange}
-          required
-        />
-        <select
-          name="metodoPago"
-          value={venta.metodoPago}
-          onChange={handleChange}
-        >
-          <option value="efectivo">Efectivo</option>
-          <option value="tarjeta">Tarjeta</option>
-          <option value="transferencia">Transferencia</option>
-        </select>
-        <button type="submit">Guardar Venta</button>
-      </form>
+    <div className="admin-ventas-container">
+      <h2>Administrar Ventas</h2>
+
+      {error && <div className="error-alert">{error}</div>}
+
+      <div className="orders-table-container">
+        <table className="orders-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Productos</th>
+              <th>Total</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ordenes.length > 0 ? (
+              ordenes.map((orden) => (
+                <tr key={orden._id}>
+                  <td>{orden._id.slice(-6)}</td>
+                  <td>{new Date(orden.createdAt).toLocaleDateString()}</td>
+                  <td>{orden.usuario?.nombre || 'N/A'}</td>
+                  <td>
+                    <ul className="product-list">
+                      {orden.productos.map((item, idx) => (
+                        <li key={idx}>
+                          {item.productoId?.nombre || 'Producto eliminado'} 
+                          (x{item.cantidad}) - ${
+                            item.productoId?.precio
+                              ? (item.productoId.precio * item.cantidad).toFixed(2)
+                              : 'N/A'
+                          }
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td>
+                    ${typeof orden.total === 'number' ? orden.total.toFixed(2) : 'N/A'}
+                  </td>
+                  <td>
+                    <span className={`status-badge ${orden.estado}`}>
+                      {orden.estado}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="no-orders">No hay órdenes registradas</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
-export default Ventas;
+export default AdminVentas;

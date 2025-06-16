@@ -1,0 +1,46 @@
+.categoria-container {
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.nav-categorias {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background-color: #f8f9fa;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.nav-categorias a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.nav-categorias a:hover {
+  color: #ffffff;
+
+  background-color: #d1d7dd;
+}
+
+.nav-categorias a.active {
+  color: #ffffff;
+  background-color: #c0c7d0;
+}

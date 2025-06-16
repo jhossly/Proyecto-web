@@ -1,14 +1,13 @@
-// src/pages/Home.jsx
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from "../components/Header.jsx";
 import CarruselOfertas from "../components/CarruselOfertas.jsx";
-import ProductCard from '../components/ProductCard.jsx'; 
+import ProductCardWithReviews from '../components/ProductCardWithReviews.jsx';
 import './Home.css';
 
-const Home = () => {
+const HomeWithReviews = () => {
   const [productos, setProductos] = useState([]);
-  const [busqueda, setBusqueda] = useState('');
 
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -21,21 +20,16 @@ const Home = () => {
     };
     obtenerProductos();
   }, []);
-  
 
   return (
     <div className="home-container">
-      <Header busqueda={busqueda}setBusqueda={setBusqueda} />
+      <Header />
       <CarruselOfertas />
-       
+      <ProductCardWithReviews/>
       <h2>Productos disponibles</h2>
-  
       <section className="product-grid">
-        {productos
-        .filter((producto)=>
-        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-       ).map((producto) => (
-          <ProductCard
+        {productos.map((producto) => (
+          <ProductCardWithReviews
             key={producto._id}
             id={producto._id}
             nombre={producto.nombre}
@@ -49,4 +43,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeWithReviews;

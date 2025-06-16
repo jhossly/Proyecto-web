@@ -80,3 +80,16 @@
 .item-details p {
   margin: 0.25rem 0;
 }
+.cart-item {
+  transition: all 0.3s ease;
+}
+
+.cart-item.updating {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.cart-footer h3 {
+  color: black !important;
+  background: yellow;
+  padding: 5px;
+}

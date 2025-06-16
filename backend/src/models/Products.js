@@ -34,6 +34,14 @@ fechaIngreso :{
 type: Date,
 default: Date.now
 },
+activo: {
+    type: Boolean,
+    default: true
+  },
+  fechaEliminacion: {
+    type: Date,
+    default: null
+  }
 
 })
 

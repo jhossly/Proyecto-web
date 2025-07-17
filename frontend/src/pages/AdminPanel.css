@@ -1,63 +1,227 @@
-/* src/pages/AdminPanel.css */
-
-.admin-container {
-  max-width: 900px;
-  margin: 0 auto;
+/* Sidebar fijo */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(180deg, #0D3B66, #145374);
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-h1 {
-  text-align: center;
-  color: #ff6b00;
-  margin-bottom: 30px;
-}
-
-form {
-  background-color: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
-}
-
-h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="url"],
-select {
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0 16px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  border-right: 3px solid #dd6b20;
   box-sizing: border-box;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+.product-image {
+  mix-blend-mode: multiply;
+  filter: contrast(1.1);
 }
 
-button[type="submit"], .inventory-btn {
-  background-color: #ff6b00;
+.admin-sidebar h2 {
+  margin-bottom: 30px;
+  color: #f6ad55;
+  font-size: 20px;
+}
+.admin-panel-header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #2d3748;
+}
+.menu-button {
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  background :linear-gradient(180deg, #0D3B66, #145374);
+  color: #2d3748;
+  border: none;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.menu-button:hover {
+  background-color: #dd6b20;
+  transform: translateX(5px);
+}
+
+.menu-icon {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+/* Contenedor principal: margen para sidebar y header */
+.admin-main {
+  margin-left: 260px; /* espacio para sidebar fijo */
+  margin-top: 60px;   /* espacio para header fijo */
+  padding: 30px;
+  background-color: #ffffff;
+  min-height: calc(100vh - 60px);
+  box-sizing: border-box;
+  transition: margin-left 0.3s ease;
+}
+
+
+/* Header fijo */
+.admin-header {
+  position: fixed;
+  top: 0;
+  left: 260px; /* al lado del sidebar */
+  right: 0;
+  height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 2px solid #e2e8f0;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  transition: left 0.3s ease;
+}
+
+/* Botón cerrar sesión */
+.logout-btn {
+  background-color: #f6ad55;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.logout-btn:hover {
+  background-color: #dd6b20;
+  transform: scale(1.05);
+}
+
+.logout-icon {
+  color: white;
+}
+
+.logout-wrapper {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 10px;
+}
+
+/* Contenido de la página */
+.admin-content {
+  overflow-y: auto;
+  max-height: calc(100vh - 60px - 60px); /* altura menos header y posible padding */
+}
+
+/* Mensaje bienvenida */
+.admin-welcome {
+  text-align: center;
+  color: #718096;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1100;
+  background: #f6ad55;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+  background: #dd6b20;
+}
+/* Agrega estos estilos al final de tu archivo AdminPanel.css */
+
+.submit-btn {
+  background-color: #0D3B66; /* Azul original */
   color: white;
   border: none;
   padding: 12px 20px;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  display: block;
   width: 100%;
+  max-width: 200px;
+  margin: 20px auto 0;
+  text-align: center;
 }
 
-button[type="submit"]:hover,
-.inventory-btn:hover {
-  background-color: #e65c00;
+.submit-btn:hover {
+  background-color: #145374; /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.inventory-btn {
-  margin-bottom: 30px;
+/* Estilos responsivos para el botón */
+@media (max-width: 768px) {
+  .submit-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .admin-main {
+    margin-left: 0;
+  }
+  
+  .admin-header {
+    left: 0;
+  }
+  
+  .menu-button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .menu-icon {
+    font-size: 14px;
+  }
+  .submit-btn {
+    background-color: #2440b3b1;
+    
+  }
+  
 }

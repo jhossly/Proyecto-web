@@ -1,5 +1,7 @@
+//backend/src/index.js
 import mongoose from 'mongoose';
 
+import './db.js';
 import app from './app.js'
 
 const PORT = 5000;

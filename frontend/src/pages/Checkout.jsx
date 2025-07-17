@@ -1,21 +1,49 @@
 // src/pages/Checkout.jsx
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { FiUser, FiMail, FiMapPin, FiCreditCard, FiShoppingBag, FiArrowLeft, FiCheck } from 'react-icons/fi';
 import './Checkout.css';
 
 const Checkout = () => {
   const { cartItems, clearCart } = useContext(CartContext);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
-  const [direccion, setDireccion] = useState('');
+  const [direccionSeleccionada, setDireccionSeleccionada] = useState('');
   const [metodoPago, setMetodoPago] = useState('tarjeta');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  const total = cartItems.reduce((acc, item) => {
+    const precio = parseFloat(item.precio) || 0;
+    const cantidad = parseInt(item.quantity) || 0;
+    return acc + precio * cantidad;
+  }, 0);
+
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/auth/me', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')?.replace(/"/g, '')}`
+          }
+        });
+        setUser(res.data.usuario);
+        localStorage.setItem('user', JSON.stringify(res.data.usuario));
+      } catch (err) {
+        console.error('No se pudo actualizar el usuario:', err);
+      }
+    };
+
+    if (!user?.nombre || !user?.correo) {
+      fetchUser();
+    }
+  }, [setUser, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,21 +54,16 @@ const Checkout = () => {
     }
 
     if (cartItems.length === 0) {
-  return (
-    <div className="checkout-container">
-      <h2>Tu carrito está vacío</h2>
-      <button onClick={() => navigate('/')}>Ir a productos</button>
-    </div>
-  );
-}
-
+      setError('Tu carrito está vacío');
+      return;
+    }
 
     const orderData = {
       productos: cartItems.map(item => ({
         productId: item.id,
         cantidad: item.quantity
       })),
-      direccion: direccion || 'Retiro en local',
+      direccion: direccionSeleccionada || 'Retiro en local',
       metodoPago,
       total
     };
@@ -57,8 +80,6 @@ const Checkout = () => {
         }
       });
 
-      alert('¡Compra realizada con éxito!');
-      console.log('Orden creada:', data);
       setSuccess(true);
       clearCart();
       setTimeout(() => navigate('/con-resenas'), 2500);
@@ -79,58 +100,101 @@ const Checkout = () => {
     );
   }
 
-  const total = cartItems.reduce((acc, item) => {
-  const precio = parseFloat(item.precio) || 0;
-  const cantidad = parseInt(item.quantity) || 0;
-  return acc + precio * cantidad;
-}, 0);
-
+  if (cartItems.length === 0) {
+    return (
+      <div className="checkout-container">
+        <h2>Tu carrito está vacío</h2>
+        <button onClick={() => navigate('/')} className="primary-button">
+          <FiShoppingBag className="icon" /> Ir a productos
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="checkout-container">
       <h2>Finalizar Compra</h2>
 
-      {error && <p className="error-message">{error}</p>}
-      {success && <p className="success-message">¡Compra realizada con éxito!</p>}
+      {error && <div className="message error-message">{error}</div>}
+      {success && <div className="message success-message">¡Compra realizada con éxito!</div>}
 
       <form onSubmit={handleSubmit} className="checkout-form">
         <div className="user-info">
-          <p><strong>Cliente:</strong> {user.nombre}</p>
-          <p><strong>Email:</strong> {user.correo}</p>
+          <p><strong><FiUser className="icon" /> Cliente:</strong> {user.nombre}</p>
+          <p><strong><FiMail className="icon" /> Email:</strong> {user.correo}</p>
         </div>
 
-        <label>Dirección de envío:</label>
-        <input
-          type="text"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-          placeholder="Deja en blanco para retiro en local"
-        />
+        <div className="form-group">
+          <label><FiMapPin className="icon" /> Dirección de envío:</label>
+          {user?.direcciones?.length > 0 ? (
+            <select 
+              value={direccionSeleccionada} 
+              onChange={(e) => setDireccionSeleccionada(e.target.value)}
+              required
+            >
+              <option value="">Selecciona una dirección</option>
+              {user.direcciones.map((dir, i) => (
+                <option key={i} value={dir.direccion}>
+                  {dir.alias} - {dir.direccion}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input 
+              type="text"
+              value={direccionSeleccionada}
+              onChange={(e) => setDireccionSeleccionada(e.target.value)}
+              placeholder="Dirección de envío"
+              required
+            />
+          )}
+        </div>
 
-        <label>Método de pago:</label>
-        <select value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)}>
-          <option value="tarjeta">Tarjeta</option>
-          <option value="transferencia">Transferencia</option>
-          <option value="paypal">PayPal</option>
-        </select>
+        <div className="form-group">
+          <label><FiCreditCard className="icon" /> Método de pago:</label>
+          <select value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)}>
+            <option value="tarjeta">Tarjeta de crédito/débito</option>
+            <option value="transferencia">Transferencia bancaria</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </div>
 
-        <h3>Resumen</h3>
-        <ul>
-          {cartItems.map(item => (
-            <li key={item.id}>
-              {item.nombre} x{item.quantity} — ${item.precio * item.quantity}
-            </li>
-          ))}
-        </ul>
-        <p><strong>Total:</strong> ${total.toFixed(2)}</p>
+        <div className="order-summary">
+          <h3 className="section-title"><FiShoppingBag className="icon" /> Resumen del Pedido</h3>
+          <ul className="order-items">
+            {cartItems.map(item => (
+              <li key={item.id} className="order-item">
+                <span>{item.nombre} x{item.quantity}</span>
+                <span>${(item.precio * item.quantity).toFixed(2)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="order-total">Total: ${total.toFixed(2)}</p>
+        </div>
 
-        <button type="submit" disabled={loading || cartItems.length === 0}>
-          {loading ? 'Procesando...' : 'Confirmar Compra'}
-        </button>
-        {loading && <p className="loading-message">Procesando tu compra...</p>}
-        <button type="button" onClick={() => navigate('/')} className="cancel-button">
-          Cancelar
-        </button>
+        <div className="button-group">
+          <button 
+            type="submit" 
+            disabled={loading || cartItems.length === 0}
+            className="buy-button"
+          >
+            {loading ? 'Procesando...' : (
+              <>
+                <FiCheck className="icon" /> Confirmar Compra
+              </>
+            )}
+          </button>
+
+          <button 
+            type="button" 
+            onClick={() => navigate('/')} 
+            className="cancel-button"
+          >
+            <FiArrowLeft className="icon" /> Cancelar
+          </button>
+        </div>
+
+        {loading && <div className="message loading-message">Procesando tu compra...</div>}
       </form>
     </div>
   );

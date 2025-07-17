@@ -24,7 +24,30 @@ const userSchema = new mongoose.Schema({
   fechaRegistro: { 
     type: Date, 
     default: Date.now 
+  },
+  telefono: { 
+    type: String, 
+    default: '' 
+  },
+  direcciones: [
+  {
+    alias: { type: String, required: true },
+    direccion: { type: String, required: true },
+    detalles: { type: String },
+    esPrincipal: { type: Boolean, default: false }
   }
+],
+
+  imagenPerfil: { 
+    type: String, 
+    default: '' 
+  },
+  activo: { 
+    type: Boolean, 
+    default: true 
+  }
+
+  
 });
 
 export default mongoose.model('User', userSchema);

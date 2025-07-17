@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Ventas.css';
@@ -37,12 +38,40 @@ const AdminVentas = () => {
 
     fetchOrders();
   }, []);
+    const handleEstadoChange = async (ordenId, nuevoEstado) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await axios.patch(
+      `http://localhost:5000/api/orders/${ordenId}/estado`,
+      { nuevoEstado },
+      {
+        headers: {
+          'Authorization': `Bearer ${token.replace(/"/g, '')}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    // Actualiza solo la orden modificada
+    setOrdenes(prevOrdenes =>
+      prevOrdenes.map(orden =>
+        orden._id === ordenId ? { ...orden, estado: nuevoEstado } : orden
+      )
+    );
+
+  } catch (err) {
+    console.error('Error al cambiar el estado:', err);
+    setError('No se pudo actualizar el estado');
+  }
+};
 
   if (loading) return <div className="loading">Cargando órdenes...</div>;
 
   return (
     <div className="admin-ventas-container">
-      <h2>Administrar Ventas</h2>
+      <h2>Administrar ventas</h2>
 
       {error && <div className="error-alert">{error}</div>}
 
@@ -83,10 +112,17 @@ const AdminVentas = () => {
                     ${typeof orden.total === 'number' ? orden.total.toFixed(2) : 'N/A'}
                   </td>
                   <td>
-                    <span className={`status-badge ${orden.estado}`}>
-                      {orden.estado}
-                    </span>
-                  </td>
+                  <select
+                    value={orden.estado}
+                    onChange={(e) => handleEstadoChange(orden._id, e.target.value)}
+                  >
+                    <option value="pendiente">Pendiente</option>
+                    <option value="procesando">Procesando</option>
+                    <option value="completada">Completada</option>
+                    <option value="cancelada">Cancelada</option>
+                  </select>
+                </td>
+
                 </tr>
               ))
             ) : (

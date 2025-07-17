@@ -1,21 +1,76 @@
-.carrusel-contenedor {
-  position: relative;
-  width: 100%;
-  margin: 40px auto 0 auto; 
-  max-width: 400px;
+/*CarruselOfertas.css*/.carrusel-contenedor {
+  max-width: 1000px;
+  margin: 60px auto 80px; /* más espacio vertical */
+  padding: 20px;
+  overflow: visible;
+}
+
+.slide {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px 20px 25px;
+  margin: 30px 10px; /* más espacio entre slides */
   text-align: center;
-  padding-top: 40px; 
+  transition: transform 0.3s ease;
+  position: relative;
+  min-height: 400px; /* altura suficiente para que todo quepa */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slide:hover {
+  transform: scale(1.03);
 }
 
 .slide img {
+  width: 100%;
   max-width: 250px;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  padding-top: 100px;  
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 10px;
 }
 
+.slide h3 {
+  font-size: 1.2rem;
+  color: #003460;
+  margin-bottom: 10px;
+}
+
+.slide p {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1b4332;
+  margin-bottom: 15px;
+}
+
+.oferta-etiqueta {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: #e60023;
+  color: white;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  font-weight: bold;
+  z-index: 10;
+}
 
 .slick-dots {
-  bottom: -5px !important; /* Ajusta según necesidad */
+  bottom: -20px !important;
+}
+
+@media (max-width: 768px) {
+  .slide {
+    min-height: 360px;
+    padding: 24px 16px;
+  }
+
+  .slide img {
+    height: 180px;
+  }
 }

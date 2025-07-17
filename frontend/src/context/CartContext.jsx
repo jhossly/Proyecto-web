@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from 'react';
+// frontend/src/context/CartContext.jsx
+import { createContext, useState, useEffect, useContext } from 'react';
 
 export const CartContext = createContext();
 
@@ -14,8 +15,10 @@ export const CartProvider = ({ children }) => {
         const parsed = JSON.parse(savedCart);
         const cleaned = parsed.map(item => ({
           ...item,
-          precio: parseFloat(String(item.precio).replace(',', '.')) || 0,
-          quantity: parseInt(item.quantity) || 1
+          precio: typeof item.precio === 'string' 
+            ? parseFloat(item.precio.replace('$', '').trim()) 
+            : Number(item.precio),
+          quantity: Number(item.quantity) || 1
         }));
         setCartItems(cleaned);
       } catch (e) {
@@ -24,6 +27,19 @@ export const CartProvider = ({ children }) => {
       }
     }
   }, []);
+   
+      useEffect(() => {
+  const savedCart = localStorage.getItem('pendingCart');
+  if (savedCart) {
+    try {
+      const parsed = JSON.parse(savedCart);
+      setCartItems(parsed);
+      localStorage.removeItem('pendingCart');
+    } catch (e) {
+      console.error('Error al restaurar carrito pendiente');
+    }
+  }
+}, []);
 
   // Guardar carrito en localStorage cuando cambia
   useEffect(() => {
@@ -32,18 +48,20 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product) => {
     setCartItems(prev => {
-      const existing = prev.find(p => p.id === product.id);
-      if (existing) {
-        return prev.map(p =>
-          p.id === product.id
-            ? { ...p, quantity: p.quantity + 1 }
-            : p
+      const existingItem = prev.find(item => item.id === product.id);
+      if (existingItem) {
+        return prev.map(item =>
+          item.id === product.id 
+            ? { ...item, quantity: item.quantity + 1 } 
+            : item
         );
       }
       return [...prev, {
         ...product,
         quantity: 1,
-        precio: parseFloat(String(product.precio).replace(',', '.')) || 0
+        precio: typeof product.precio === 'string' 
+          ? parseFloat(product.precio.replace('$', '').trim()) 
+          : Number(product.precio)
       }];
     });
     setIsCartOpen(true);
@@ -53,7 +71,7 @@ export const CartProvider = ({ children }) => {
     setCartItems(prev =>
       prev.map(item =>
         item.id === id
-          ? { ...item, quantity: Math.max(1, parseInt(newQuantity)) }
+          ? { ...item, quantity: Math.max(1, Number(newQuantity)) }
           : item
       )
     );
@@ -63,7 +81,15 @@ export const CartProvider = ({ children }) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
   };
 
-  const clearCart = () => setCartItems([]);
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+  };
+
+  // Función para obtener el conteo total de items
+  const getItemCount = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
 
   return (
     <CartContext.Provider
@@ -74,10 +100,15 @@ export const CartProvider = ({ children }) => {
         removeItem,
         clearCart,
         isCartOpen,
-        setIsCartOpen
+        setIsCartOpen,
+        getItemCount 
       }}
     >
       {children}
     </CartContext.Provider>
   );
 };
+
+// Hook 
+export const useCart = () => useContext(CartContext);
+

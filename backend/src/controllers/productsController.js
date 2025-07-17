@@ -1,6 +1,7 @@
+// backend/src/controllers/productsController.js
 import Products from '../models/Products.js';
 export const crearProducto = async (req, res) => {
-  const { nombre, descripcion, precio, categoria, stock, imagen, conIVA } = req.body;
+  const { nombre, descripcion, precio, categoria,sudcategoria, stock, imagen, conIVA } = req.body;
 
   try {
     // Validación 
@@ -16,6 +17,7 @@ export const crearProducto = async (req, res) => {
       descripcion: descripcion || '',
       precio: precioFinal,
       categoria: categoria || 'general',
+      subcategoria: req.body.subcategoria || 'General', // Asegura que siempre haya una subcategoría
       stock: stock || 0,
       imagen: imagen || '',
       conIVA: conIVA || false,
@@ -93,7 +95,7 @@ export const obtenerTodosProductos = async (req, res) => {
 
 export const actualizarProducto = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, precio, categoria, stock, imagen, conIVA } = req.body;
+  const { nombre, descripcion, precio, categoria,subcategoria, stock, imagen, conIVA } = req.body;
 
   try {
     // Validación 
@@ -109,7 +111,8 @@ export const actualizarProducto = async (req, res) => {
         nombre,
         descripcion,
         precio: precioFinal,
-        categoria,
+        categoria: categoria || 'general',
+        subcategoria: subcategoria || 'General',
         stock,
         imagen,
         conIVA

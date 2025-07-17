@@ -1,3 +1,4 @@
+// File: backend/src/controllers/userController.js
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
@@ -87,7 +88,66 @@ const obtenerUsuarioAutenticado = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener usuario' });
   }
 };
+ // Actualizar perfil de usuario
+export const actualizarPerfilUsuario = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { nombre, correo, telefono, direcciones } = req.body;
 
+    // Verificar si el correo ya existe en otro usuario
+    if (correo) {
+      const usuarioConEmail = await User.findOne({ 
+        correo, 
+        _id: { $ne: userId } 
+      });
+      
+      if (usuarioConEmail) {
+        return res.status(400).json({ 
+          mensaje: 'El correo ya está en uso por otro usuario' 
+        });
+      }
+    }
+
+    const usuarioActualizado = await User.findByIdAndUpdate(
+      userId,
+      { nombre, correo, telefono, direcciones },
+      { new: true, runValidators: true }
+    ).select('-contraseña');
+
+    res.json({ 
+      mensaje: 'Perfil actualizado correctamente',
+      usuario: usuarioActualizado 
+    });
+  } catch (error) {
+    console.error('Error al actualizar usuario:', error);
+    res.status(500).json({ mensaje: 'Error al actualizar perfil' });
+  }
+};
+
+// Desactivar cuenta
+export const desactivarCuenta = async (req, res) => {
+  try {
+    const userId = req.userId;
+    
+    const usuarioActualizado = await User.findByIdAndUpdate(
+      userId,
+      { activo: false },
+      { new: true }
+    ).select('-contraseña');
+
+    res.json({ 
+      mensaje: 'Cuenta desactivada correctamente',
+      usuario: usuarioActualizado
+    });
+  } catch (error) {
+    console.error('Error al desactivar cuenta:', error);
+    res.status(500).json({ mensaje: 'Error al desactivar cuenta' });
+  }
+};
+export const getProfile = async (req, res) => {
+  const user = await User.findById(req.user.id); 
+  res.json({ usuario: user });
+};
 export { register, login, obtenerUsuarioAutenticado };
 
 

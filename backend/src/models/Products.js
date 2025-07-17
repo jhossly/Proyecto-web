@@ -1,3 +1,4 @@
+// File: backend/src/models/Products.js
 import mongoose, { Schema } from "mongoose";
 const productSchema =new mongoose.Schema({
 
@@ -16,7 +17,14 @@ required: true
 },
 categoria:{
     type: String,
-    required: true 
+    required: true ,
+    
+
+},
+subcategoria :{
+    type: String,
+    required :true,
+    default: 'General'
 },
 stock:{
     type :Number,

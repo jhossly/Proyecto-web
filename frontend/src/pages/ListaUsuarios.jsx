@@ -1,4 +1,5 @@
-// src/pages/ListaUsuarios.jsx
+
+// src/pages/ListaUsuarios.jsx// src/pages/ListaUsuarios.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ListaUsuarios.css';
@@ -25,25 +26,29 @@ const ListaUsuarios = () => {
 
   return (
     <div className="usuarios-container">
-      <h2>Usuarios Registrados</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usuarios.map((user) => (
-            <tr key={user._id}>
-              <td>{user.nombre}</td>
-              <td>{user.correo}</td>
-              <td>{user.role}</td>
+      <h2>Usuarios registrados</h2>
+      <div className="table-wrapper">
+        <table className="usuarios-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Rol</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {usuarios.map((user) => (
+              <tr key={user._id}>
+                <td>{user.nombre}</td>
+                <td>{user.correo}</td>
+                <td data-role={user.role.toLowerCase()}>
+                  {user.role}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

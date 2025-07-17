@@ -1,0 +1,228 @@
+:root {
+  --primary: #3182ce;
+  --primary-dark: #2b6cb0;
+  --gray-light: #edf2f7;
+  --gray: #718096;
+  --text: #2c3e50;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --shadow: 0 6px 20px rgba(49, 130, 206, 0.1);
+  --radius: 16px;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.reporte-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-family: var(--font-main);
+  color: var(--text);
+}
+
+.reporte-container h2 {
+  text-align: center;
+  font-size: 2.4rem;
+  color: var(--primary);
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-family: var(--font-main);
+}
+
+/* Filtros */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  align-items: flex-end;
+  font-family: var(--font-main);
+}
+
+.fechas-personalizadas label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.fechas-personalizadas input[type="date"] {
+  padding: 0.6rem 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  background: var(--white);
+  font-size: 1rem;
+  width: 100%;
+  font-family: var(--font-main);
+}
+
+.fechas-personalizadas button {
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 600;
+  font-family: var(--font-main);
+  font-size: 1rem;
+}
+
+.fechas-personalizadas button:hover {
+  background: var(--primary-dark);
+}
+
+/* Rangos rápidos */
+.rangos-rapidos {
+  display: flex;
+  gap: 10px;
+}
+
+.rangos-rapidos button {
+  padding: 0.7rem 1.2rem;
+  background: var(--primary);
+  border: 1px solid var(--primary-dark);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 600;
+  color: var(--white);
+  font-size: 1rem;
+  font-family: var(--font-main);
+}
+
+.rangos-rapidos button:hover {
+  background: var(--primary-dark);
+}
+
+/* KPIs */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.kpi-card {
+  background: var(--white);
+  padding: 1.2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+  font-family: var(--font-main);
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+}
+
+.kpi-card span {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 0.5rem;
+}
+
+/* Gráficos */
+.graficos-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2.5rem 0;
+}
+
+.grafico h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--primary-dark);
+  font-family: var(--font-main);
+}
+
+/* Tabla */
+.tabla-ventas {
+  margin: 2rem 0;
+  overflow-x: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--white);
+  font-family: var(--font-main);
+}
+
+.tabla-ventas table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.tabla-ventas th, .tabla-ventas td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.tabla-ventas th {
+  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  color: white;
+  font-weight: 600;
+}
+
+.tabla-ventas tbody tr:hover {
+  background-color: #ebf5ff;
+}
+
+.tabla-ventas tfoot {
+  background-color: #f0f4fa;
+  font-weight: 700;
+}
+
+/* Exportar */
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  font-family: var(--font-main);
+}
+
+.export-buttons a {
+  padding: 0.8rem 1.2rem;
+  background: var(--primary);
+  color: var(--white);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+  font-size: 1rem;
+}
+
+.export-buttons a:hover {
+  background: var(--primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .graficos-container {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}

@@ -1,33 +1,4 @@
-// src/controllers/reviewController.js
-/*import Review from '../models/Review.js';
 
-export const crearReview = async (req, res) => {
-  const { productoId, puntuacion } = req.body;
-  const usuarioId = req.userId; // Asignado por el middleware del token
-
-  try {
-    // Verificar si el usuario ya calificó ese producto (opcional)
-    const existente = await Review.findOne({ producto: productoId, usuario: usuarioId });
-    if (existente) {
-      // Actualizar si ya existe
-      existente.puntuacion = puntuacion;
-      await existente.save();
-      return res.json({ message: 'Puntuación actualizada', review: existente });
-    }
-
-    const nueva = new Review({
-      producto: productoId,
-      usuario: usuarioId,
-      puntuacion
-    });
-
-    await nueva.save();
-    res.status(201).json({ message: 'Puntuación registrada', review: nueva });
-
-  } catch (error) {
-    res.status(500).json({ error: 'Error al guardar la puntuación' });
-  }
-};*/
 import mongoose from 'mongoose';
 import Review from '../models/Review.js';
 import Product from '../models/Products.js';

@@ -1,7 +1,10 @@
+/* frontend/src/index.css
+ * Estilos globales para la aplicación
+ */
 index.css/:root {
   --color-bg: #e6e8cd;
   --color-primary: #f05335;
-  --color-primary-dark: #c84329;
+  --color-primary-dark: #201b51;
   --color-text: #003460;
   --font-base: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
@@ -22,6 +25,7 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   min-height: 100vh;
+  padding-top: 280px;
 }
 
 a {
@@ -52,4 +56,9 @@ button:hover {
 }
 button:focus {
   outline: 3px solid var(--color-text);
+}
+@media (max-width: 768px) {
+  body {
+    padding-top: 100px; /* Reduce padding on smaller screens */
+  }
 }

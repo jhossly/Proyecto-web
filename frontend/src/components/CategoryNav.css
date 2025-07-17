@@ -1,0 +1,179 @@
+/* frontend/src/components/CategoryNav.css */
+.category-nav {
+  background: #145374; /* Usando el azul del gradiente del header */
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1rem;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.category-nav li {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Enlaces principales */
+.category-nav > ul > li > a {
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.category-nav > ul > li > a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Iconos */
+.category-nav svg {
+  transition: fill 0.2s ease;
+}
+
+/* Mega menú (subcategorías) */
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 1rem;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  transform: translateY(10px);
+}
+
+.category-nav li:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-menu h4 {
+  margin: 0 0 0.5rem 0;
+  color: #e88119;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.mega-menu ul {
+  display: block;
+  gap: 0;
+}
+
+.mega-menu li {
+  padding: 0.3rem 0;
+}
+
+.mega-menu a {
+  color: #555;
+  padding: 0.3rem 0;
+  display: block;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.mega-menu a:hover {
+  color: #0D3B66;
+}
+
+.view-all a {
+  color: #e88119 !important;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .category-nav {
+    display: none; /* Ocultamos la navegación normal en móviles */
+  }
+  
+  /* Mostramos solo el botón de categorías */
+  .mobile-category-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #145374;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Sidebar para móviles */
+  .mobile-categories {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: white;
+    z-index: 1100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    padding-top: 70px;
+    overflow-y: auto;
+  }
+  
+  .mobile-categories.show {
+    transform: translateX(0);
+  }
+  
+  .mobile-categories ul {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .mobile-categories li {
+    width: 100%;
+  }
+  
+  .mobile-categories > ul > li > a {
+    padding: 1rem;
+    color: #333;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .mobile-categories .mega-menu {
+    position: static;
+    box-shadow: none;
+    display: none;
+    padding: 0;
+  }
+  
+  .mobile-categories li.active .mega-menu {
+    display: block;
+  }
+  
+  .close-sidebar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+}

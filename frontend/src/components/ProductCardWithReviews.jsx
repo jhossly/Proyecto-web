@@ -9,19 +9,25 @@ const ProductCardWithReviews = ({ id, nombre, descripcion, precio, imagen }) => 
   const { addToCart, setIsCartOpen } = useContext(CartContext);
   const { user } = useAuth();
 
+  // Validar precio y datos mínimos
+  if (!id || !nombre || !imagen || !precio || isNaN(parseFloat(precio))) {
+    return null;
+  }
+
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null); //  para mostrar mensaje de éxito
+  const [success, setSuccess] = useState(null);
 
-  //  función para obtener reseñas 
   const fetchReviews = async () => {
     try {
       const res = await axios.get(`http://localhost:5000/api/reviews/producto/${id}`);
       setReviews(res.data);
 
-      const avg = res.data.reduce((acc, r) => acc + r.calificacion, 0) / res.data.length;
+      const avg = res.data.length
+        ? res.data.reduce((acc, r) => acc + r.calificacion, 0) / res.data.length
+        : 0;
       setAverageRating(avg.toFixed(1));
     } catch (err) {
       console.error('Error al obtener reseñas:', err);
@@ -62,11 +68,11 @@ const ProductCardWithReviews = ({ id, nombre, descripcion, precio, imagen }) => 
 
       setRating(0);
       setError(null);
-      setSuccess('Reseña guardada correctamente '); //  Mensaje temporal
+      setSuccess('Reseña guardada correctamente');
 
-      await fetchReviews(); //  
+      await fetchReviews();
 
-      setTimeout(() => setSuccess(null), 3000); //  Ocultar mensaje de éxito después de 3 segundos
+      setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       console.error('Error al guardar calificación:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'No se pudo guardar la calificación');

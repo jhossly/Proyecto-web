@@ -5,7 +5,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const token = localStorage.getItem('token');
 
   try {
-    const datosGuardados = localStorage.getItem('user'); // usa solo 'user' o 'usuario', pero sé consistente
+    const datosGuardados = localStorage.getItem('user'); 
     if (datosGuardados) {
       user = JSON.parse(datosGuardados);
     }

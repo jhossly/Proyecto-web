@@ -1,3 +1,4 @@
+//backend/src/controllers/orderController.js
 import Order from '../models/Order.js';
 import Producto from '../models/Products.js';
 
@@ -81,3 +82,100 @@ export const obtenerTodasLasOrdenes = async (req, res) => {
   }
 };
 
+
+export const obtenerResumenVentas = async (req, res) => {
+  try {
+    const ordenes = await Order.find().populate('productos.productoId');
+
+    let totalVentas = 0;
+    let totalProductos = 0;
+    const productosVendidos = {};
+
+    ordenes.forEach(orden => {
+      totalVentas += orden.total;
+
+      orden.productos.forEach(item => {
+        totalProductos += item.cantidad;
+        const nombre = item.productoId?.nombre || 'Producto eliminado';
+
+        if (!productosVendidos[nombre]) {
+          productosVendidos[nombre] = item.cantidad;
+        } else {
+          productosVendidos[nombre] += item.cantidad;
+        }
+      });
+    });
+
+    res.json({
+  totalVentas: totalVentas || 0,
+  totalProductos: totalProductos || 0,
+  productosVendidos
+});
+
+  } catch (err) {
+    res.status(500).json({ error: 'Error al generar el reporte' });
+  }
+};
+export const actualizarEstadoOrden = async (req, res) => {
+  try {
+    const { id }          = req.params;          // ID de la orden
+    const { nuevoEstado } = req.body;           // "procesando", "completada", etc.
+
+    // Validar que sea uno de los valores permitidos
+    const ESTADOS_VALIDOS = ['pendiente', 'procesando', 'completada', 'cancelada'];
+    if (!ESTADOS_VALIDOS.includes(nuevoEstado))
+      return res.status(400).json({ error: 'Estado no válido' });
+
+    const ordenActualizada = await Order.findByIdAndUpdate(
+      id,
+      { estado: nuevoEstado },
+      { new: true }        // ← devuelve el doc actualizado
+    )
+      .populate('usuario', 'nombre')
+      .populate('productos.productoId', 'nombre precio');
+
+    if (!ordenActualizada)
+      return res.status(404).json({ error: 'Orden no encontrada' });
+
+    res.json({ mensaje: 'Estado actualizado', orden: ordenActualizada });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al actualizar estado' });
+  }
+};
+export const obtenerOrdenesPorUsuario = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const ordenes = await Order.find({ usuario: userId })
+      .populate('productos.productoId', 'nombre precio')
+      .sort({ createdAt: -1 }); // orden más reciente primero
+
+    res.json(ordenes);
+  } catch (error) {
+    console.error('Error al obtener órdenes del usuario:', error.message);
+    res.status(500).json({ error: 'Error al obtener órdenes del usuario' });
+  }
+};
+export const getFavoriteProduct = async (req, res) => {
+  try {
+    const fav = await Order.aggregate([
+      { $match: { usuario: req.userId } },
+      { $unwind: '$productos' },
+      { $group: {
+          _id: '$productos.producto',
+          total: { $sum: '$productos.cantidad' }
+      }},
+      { $sort: { total: -1 } },
+      { $limit: 1 }
+    ]);
+
+    if (!fav.length) return res.json(null);
+
+    const producto = await Product.findById(fav[0]._id).select('nombre');
+    res.json(producto);
+  } catch (err) {
+    console.error('Fav product error:', err);
+    res.status(500).json({ error: 'Error al calcular favorito' });
+  }
+};

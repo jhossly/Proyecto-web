@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema({
   ],
   metodoPago: {
     type: String,
-    enum: ['efectivo', 'tarjeta', 'transferencia'],
+    enum: ['efectivo', 'tarjeta', 'transferencia','paypal'],
     default: 'tarjeta'
   },
   direccion: {

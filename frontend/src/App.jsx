@@ -1,4 +1,4 @@
-
+// frontend/src/App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
@@ -17,7 +17,13 @@ import HomeWithReviews from './pages/HomeWithReviews';
 import Checkout from './pages/Checkout';
 import ListaUsuarios from './pages/ListaUsuarios';
 import Estadisticas from './pages/Estadisticas';
+import ReporteVentas from './pages/ReporteVentas';
+import MisCompras from './pages/MisCompras';
+import CategoryNav from './components/CategoryNav';
+import ProfilePage from './pages/ProfilePage';    
+
 import './App.css';
+
 
 const App = () => {
   return (
@@ -43,22 +49,27 @@ const AppContent = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/categorias/:nombreCategoria" element={<Categoria />} />
-          
-          
+          <Route path ="/categorias" element={<CategoryNav />} />
+           <Route path="/productos" element={<Categoria />} />
           {/* Rutas protegidas para admin */}
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-            <Route path="/ventas" element={<Ventas />} />
-            <Route path="/adminPanel" element={<AdminPanel />} />
-            <Route path="/adminInicio" element={<AdminInicio />} />
-            <Route path="/inventario" element={<Inventario />} />
-            <Route path="/Usuarios" element={<ListaUsuarios />} />
-            <Route path="/estadisticas" element={<Estadisticas />} />
+          <Route path="/adminInicio" element={<AdminInicio />}>
+            <Route path="AdminPanel" element={<AdminPanel />} />
+            <Route path="Usuarios" element={<ListaUsuarios />} />
+            <Route path="Ventas" element={<Ventas />} />
+            <Route path="Inventario" element={<Inventario />} />
+            <Route path="Estadisticas" element={<Estadisticas />} />
+            <Route path="Reporte" element={<ReporteVentas />} />
           </Route>
+        </Route>
+
           
           {/* Rutas protegidas para user */}
           <Route element={<ProtectedRoute allowedRoles={['user']} />}>
             <Route path="/con-resenas" element={<HomeWithReviews/>} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/Mis-compras" element={<MisCompras />} />
+            <Route path="/profile" element={<ProfilePage />} />
 
           </Route>
         </Routes>
